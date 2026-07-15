@@ -69,3 +69,7 @@ artifacts/nextjs-app/uploads/
 
 .env.vercel.neon
 .env.vercel*
+
+.tmp-*
+.env.vercel.neon
+.env.vercel*
