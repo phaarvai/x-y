@@ -1,5 +1,5 @@
 {
   "framework": "nextjs",
-  "installCommand": "pnpm install --no-frozen-lockfile",
+  "installCommand": "pnpm install --no-frozen-lockfile --config.strict-dep-builds=false",
   "buildCommand": "pnpm --filter @workspace/nextjs-app run build"
 }

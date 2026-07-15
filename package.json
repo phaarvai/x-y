@@ -20,9 +20,11 @@
     "mvp:accept:live": "node ./scripts/mvp-acceptance.mjs --live"
   },
   "devDependencies": {
-    "@esbuild/win32-x64": "0.27.3",
     "prettier": "^3.8.1",
     "tsx": "catalog:",
     "typescript": "~5.9.2"
+  },
+  "optionalDependencies": {
+    "@esbuild/win32-x64": "0.27.3"
   }
 }
