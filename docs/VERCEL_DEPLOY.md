@@ -24,22 +24,26 @@ Set these in Vercel → Project → Settings → Environment Variables (Producti
 
 | Name | Value |
 |------|--------|
-| `DATABASE_URL` | Hosted Postgres URL (Neon, Supabase, or Vercel Postgres). Must not be localhost. |
-| `SESSION_SECRET` | Long random string (32+ chars) |
-| `APP_ENV` | `production` |
-| `NODE_ENV` | `production` |
+| `DATABASE_URL` | **Required.** Hosted Postgres URL (Neon, Supabase, or Vercel Postgres). Must not be localhost. |
+| `SESSION_SECRET` | Long random string (32+ chars) — already set on `x-y--main` |
+| `APP_ENV` | `production` — already set |
+| `NODE_ENV` | `production` — already set |
 | `NEXT_PUBLIC_BASE_PATH` | *(leave empty for `*.vercel.app`)* |
 | `STORAGE_PROVIDER` | `local` for MVP, or `s3`/`gcs`/`azure` when configured |
 | `FF_FILE_UPLOADS` | `true` |
 | `FF_AUDIT_API` | `true` |
 
+## Live production URL
+
+After deploy: **https://x-y-main.vercel.app**
+
 ## Database after first deploy
 
-From your machine (with the same `DATABASE_URL` as Vercel):
+Without `DATABASE_URL`, the UI may load but **login/register/API routes will fail**. Add a hosted Postgres URL, then from your machine:
 
 ```bash
-pnpm --filter @workspace/db migrate
-pnpm --filter @workspace/db seed
+DATABASE_URL="postgresql://..." pnpm --filter @workspace/db migrate
+DATABASE_URL="postgresql://..." pnpm --filter @workspace/db seed
 ```
 
 ## Common failures
