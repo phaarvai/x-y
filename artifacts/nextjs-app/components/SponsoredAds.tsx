@@ -60,7 +60,16 @@ export default function SponsoredAds({
         >
           {ad.imageUrl && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={ad.imageUrl} alt="" className="w-full h-28 object-cover" />
+            <img
+              src={ad.imageUrl}
+              alt=""
+              className="w-full h-28 object-cover bg-gray-100"
+              loading="lazy"
+              referrerPolicy="no-referrer"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).style.display = "none";
+              }}
+            />
           )}
           <div className="p-3">
             <p className="text-sm font-medium text-gray-900">{ad.title}</p>

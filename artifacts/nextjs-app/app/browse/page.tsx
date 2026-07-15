@@ -66,7 +66,8 @@ export default function BrowsePage() {
   });
 
   const apiResults = data?.data ?? [];
-  const useMock = !isLoading && !isError && apiResults.length === 0 && !searchQuery;
+  // Fall back to sample listings when API is unavailable or returns empty (e.g. cold DB)
+  const useMock = !isLoading && (isError || (apiResults.length === 0 && !searchQuery));
 
   const filtered = useMemo(() => {
     if (useMock) {
@@ -101,12 +102,12 @@ export default function BrowsePage() {
         </div>
 
         <div className="bg-white rounded-xl border border-gray-200 p-4 mb-6 shadow-sm">
-          <div className="flex gap-3 mb-3">
+          <div className="flex gap-3 mb-3 flex-col sm:flex-row">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <Input placeholder="Search by machine type, capability, or location..." value={query} onChange={(e) => setQuery(e.target.value)} className="pl-10 h-11 border-gray-200 rounded-lg" />
             </div>
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white h-11 px-6 gap-2 rounded-lg" onClick={() => setSearchQuery(query)}>
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white h-11 px-6 gap-2 rounded-lg w-full sm:w-auto shrink-0" onClick={() => setSearchQuery(query)}>
               <Search className="w-4 h-4" /> Search
             </Button>
           </div>

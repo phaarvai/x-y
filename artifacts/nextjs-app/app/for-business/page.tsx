@@ -13,11 +13,17 @@ export default function ForBusinessPage() {
           <div className="inline-flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-full text-sm font-medium mb-6">
             <Factory className="w-4 h-4" /> For Manufacturers
           </div>
-          <h1 className="text-5xl font-extrabold mb-5">List Your Factory on X!Y</h1>
+          <h1 className="text-4xl sm:text-5xl font-extrabold mb-5 px-1">List Your Factory on X!Y</h1>
           <p className="text-blue-200 text-lg max-w-2xl mx-auto mb-10">Connect with thousands of innovators and businesses looking for manufacturing capacity. Fill your production slots and grow your business.</p>
-          <div className="flex gap-4 justify-center">
-            <Link href="/register"><Button size="lg" className="bg-white text-blue-700 hover:bg-blue-50 font-semibold px-8 h-12">Get Started Free</Button></Link>
-            <Button size="lg" variant="outline" className="border-white/40 text-white hover:bg-white/10 h-12 px-8">Learn More</Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center px-2">
+            <Link href="/register" className="w-full sm:w-auto">
+              <Button size="lg" className="w-full bg-white text-blue-700 hover:bg-blue-50 font-semibold px-8 h-12">
+                Get Started Free
+              </Button>
+            </Link>
+            <Button size="lg" variant="outline" className="w-full sm:w-auto border-white/40 text-white hover:bg-white/10 h-12 px-8">
+              Learn More
+            </Button>
           </div>
         </div>
       </section>
