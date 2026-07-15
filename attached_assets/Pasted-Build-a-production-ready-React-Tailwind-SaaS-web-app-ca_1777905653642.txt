@@ -1,0 +1,171 @@
+Build a production-ready React + Tailwind SaaS web app called:
+
+"X!Y – The Explorer Factory"
+
+This is a B2B manufacturing marketplace with an Airbnb-style booking system for machines.
+
+IMPORTANT:
+- Do NOT generate placeholder or incomplete pages
+- Only create functional, connected pages with working navigation
+- Use React Router
+- Use clean, modular components
+- Use dummy JSON data for now (no backend required)
+
+-----------------------------------
+
+CORE CONCEPT:
+Users can:
+1. Describe their product idea using an AI assistant
+2. Get a step-by-step manufacturing plan
+3. Search for manufacturers based on required machines
+4. View real-time machine availability (time slots)
+5. Book machines instantly like Airbnb (NO negotiation)
+
+Providers:
+- List machines
+- Add availability slots (date + time + price)
+- Set hourly or slot-based pricing
+
+-----------------------------------
+
+ROUTES TO BUILD:
+
+1. "/" (Landing Page)
+- Hero: "Manufacturing made easy & efficient"
+- CTA buttons:
+  - "Start with AI"
+  - "Explore Machines"
+- Sections:
+  - 3-step workflow (Idea → Match → Book)
+  - Stakeholders (Manufacturers, Innovators, Investors)
+  - Stats + testimonials
+
+-----------------------------------
+
+2. "/register"
+- Role selection:
+  - Customer
+  - Provider
+- Form:
+  - Name, Email, Password
+- Redirect after signup:
+  - Customer → /ai
+  - Provider → /provider-setup
+
+-----------------------------------
+
+3. "/ai"
+- Chat UI interface
+- Input: "Describe your product idea"
+- Output:
+  - Layered manufacturing plan:
+    - Step 1: Design
+    - Step 2: Prototyping
+    - Step 3: Production
+    - Step 4: Finishing
+  - Each step includes:
+    - Required machines
+    - Materials
+    - Estimated timeline
+- CTA:
+  - "Find Machines for This Plan" → /search
+
+-----------------------------------
+
+4. "/search"
+- Filters:
+  - Machine type
+  - Location
+  - Price range
+  - Availability
+- Display machine cards:
+  - Machine name
+  - Provider name
+  - Price/hour
+  - Rating
+  - Availability status
+  - Next available slot
+- CTA:
+  - "View Availability" → /machine/:id
+
+-----------------------------------
+
+5. "/machine/:id"
+- Machine details:
+  - Images
+  - Description
+  - Pricing
+- Availability calendar:
+  - Show time slots
+  - Select slots
+- Show total cost dynamically
+- CTA:
+  - "Book Now"
+
+-----------------------------------
+
+6. "/booking-confirmation"
+- Show:
+  - Booking summary
+  - Selected slots
+  - Total cost
+  - Confirmation ID
+
+-----------------------------------
+
+7. "/provider-setup"
+- Form to add machine:
+  - Machine name
+  - Type
+  - Description
+  - Price/hour
+- Add availability slots:
+  - Date range
+  - Time range
+  - Price per slot
+- Save and list machines
+
+-----------------------------------
+
+UI REQUIREMENTS:
+- Design style: Modern SaaS dashboard
+- Colors: Blue, dark gray, white with soft gradients
+- Typography: Inter
+- Components:
+  - Cards
+  - Sidebar (for provider pages)
+  - Navbar
+- Rounded corners, soft shadows
+- Fully responsive
+
+-----------------------------------
+
+DATA STRUCTURE (mock JSON):
+
+Machine:
+{
+  id,
+  name,
+  type,
+  pricePerHour,
+  rating,
+  location,
+  availability: [
+    { date, startTime, endTime, price }
+  ]
+}
+
+-----------------------------------
+
+STRICT RULES:
+- No negotiation or messaging system
+- Only availability-based booking
+- No unused pages
+- No broken navigation
+- Every button must work
+
+-----------------------------------
+
+GOAL:
+Deliver a clean, usable MVP that feels like:
+"Airbnb for manufacturing + AI planning assistant"

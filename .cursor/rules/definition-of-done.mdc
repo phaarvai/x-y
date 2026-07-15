@@ -1,0 +1,43 @@
+---
+description: Mandatory Definition of Done — tickets cannot be Done until all checklist items pass
+alwaysApply: true
+---
+
+# Definition of Done (mandatory)
+
+Full checklist: `docs/DEFINITION_OF_DONE.md`. PR template: `.github/pull_request_template.md`.
+
+## Agent rules
+
+1. **Never** mark a ticket/PR/task as Done, complete, or merge-ready unless every DoD item is satisfied or explicitly marked N/A with reason.
+2. Before finishing work, output a **DoD verification** section: pass / fail / N/A per category.
+3. If anything fails, status stays **In Progress** and list **outstanding items** for the developer.
+4. Prefer additive, backward-compatible changes; no breaking API/schema changes without explicit approval.
+
+## Minimum delivery per feature/bugfix
+
+- Business logic + backend (+ frontend/DB when applicable); no placeholders/`TODO` in shipped paths
+- Happy-path **and** failure-path automated tests (auth, validation, 401/403, booking conflict, etc.)
+- Zod/schema validation backend; matching frontend validation when UI exists
+- RBAC + ownership checks; 401 unauthorized, 403 forbidden
+- Loading / success / empty / error UI states when UI changes
+- Update OpenAPI (`artifacts/api-server/src/lib/openapi-spec.ts` or api-spec) for API changes
+- Audit/error logging where sensitive or money/booking flows change
+- Responsive UI (desktop/tablet/mobile) + basic a11y (labels, focus, semantics)
+- Docs: API notes, migration notes, feature doc when behavior is non-obvious
+
+## Final response pattern
+
+```markdown
+### DoD verification
+- Feature: pass|fail|N/A — …
+- Tests (happy + failure): pass|fail|N/A — …
+- API contract / OpenAPI: pass|fail|N/A — …
+- RBAC / security: pass|fail|N/A — …
+- UI states + responsive: pass|fail|N/A — …
+- Validation FE+BE: pass|fail|N/A — …
+- Docs / logging: pass|fail|N/A — …
+- Backward compatible: pass|fail|N/A — …
+**Status:** Done | In Progress
+**Outstanding:** …
+```

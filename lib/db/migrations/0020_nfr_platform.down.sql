@@ -1,0 +1,14 @@
+DROP INDEX IF EXISTS idx_labor_skill_city;
+DROP INDEX IF EXISTS idx_vendor_materials_price;
+DROP INDEX IF EXISTS idx_facilities_city_industry;
+DROP INDEX IF EXISTS idx_machinery_price_hour;
+DROP INDEX IF EXISTS uq_slot_inventory_datetime_active;
+DROP TABLE IF EXISTS file_derivatives;
+DROP TABLE IF EXISTS background_jobs;
+ALTER TABLE users DROP COLUMN IF EXISTS preferred_city;
+ALTER TABLE users DROP COLUMN IF EXISTS preferred_region;
+ALTER TABLE users DROP COLUMN IF EXISTS preferred_country;
+ALTER TABLE users DROP COLUMN IF EXISTS preferred_currency;
+ALTER TABLE users DROP COLUMN IF EXISTS email_verified_at;
+DROP TABLE IF EXISTS auth_tokens;
+DELETE FROM schema_migrations WHERE version = '0020';

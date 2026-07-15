@@ -1,0 +1,28 @@
+{
+  "name": "workspace",
+  "version": "0.0.0",
+  "license": "MIT",
+  "private": true,
+  "packageManager": "pnpm@11.12.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "preinstall": "node ./scripts/preinstall.mjs",
+    "build": "pnpm run typecheck && pnpm -r --if-present run build",
+    "typecheck:libs": "tsc --build",
+    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
+    "test": "pnpm run test:unit",
+    "test:unit": "npx --yes tsx artifacts/api-server/src/lib/admin-permissions.test.ts && npx --yes tsx artifacts/api-server/src/lib/epic17.test.ts && npx --yes tsx artifacts/nextjs-app/lib/analytics-utils.test.ts && node --experimental-strip-types artifacts/nextjs-app/lib/mvp-marketplace.test.ts && node --experimental-strip-types artifacts/nextjs-app/lib/nfr.test.ts && node --experimental-strip-types artifacts/nextjs-app/lib/persona-workflows.test.ts",
+    "dod:check": "node ./scripts/verify-dod.mjs",
+    "dod:init": "node ./scripts/verify-dod.mjs --init",
+    "mvp:accept": "node ./scripts/mvp-acceptance.mjs",
+    "mvp:accept:live": "node ./scripts/mvp-acceptance.mjs --live"
+  },
+  "devDependencies": {
+    "@esbuild/win32-x64": "0.27.3",
+    "prettier": "^3.8.1",
+    "tsx": "catalog:",
+    "typescript": "~5.9.2"
+  }
+}

@@ -1,0 +1,23 @@
+kind = "web"
+previewPath = "/nextjs-app/"
+title = "X!Y – Next.js App"
+version = "1.0.0"
+id = "artifacts/nextjs-app"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/nextjs-app/" ]
+localPort = 19344
+
+[services.development]
+run = "pnpm --filter @workspace/nextjs-app run dev"
+
+[services.env]
+PORT = "19344"
+NEXT_BASE_PATH = "/nextjs-app"
+NEXT_PUBLIC_BASE_PATH = "/nextjs-app"

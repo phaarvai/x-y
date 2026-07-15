@@ -1,0 +1,267 @@
+{
+  "summary": {
+    "counts": {
+      "PASS": 7,
+      "PARTIAL": 10,
+      "FAIL": 2
+    },
+    "blockers": [
+      {
+        "step": 13,
+        "severity": "Blocker",
+        "title": "No automatic transaction record on booking confirmation",
+        "repro": "Complete steps 9–11 → query transactions for bookingId — expect none"
+      },
+      {
+        "step": 0,
+        "severity": "Blocker",
+        "title": "Staging environment unavailable for acceptance execution",
+        "repro": "Set MVP_BASE_URL and ensure app+DB migrations applied, then re-run --live"
+      }
+    ],
+    "majors": [
+      {
+        "step": 1,
+        "severity": "Major",
+        "title": "Category ↔ listing/search wiring incomplete",
+        "repro": "Create MACHINERY category in admin → open /provider-setup and /browse filters"
+      },
+      {
+        "step": 4,
+        "severity": "Major",
+        "title": "Listing UI missing image upload and support fields",
+        "repro": "Complete provider-setup step 2 — no image upload for machinery"
+      },
+      {
+        "step": 7,
+        "severity": "Major",
+        "title": "Search filters incomplete vs acceptance criteria",
+        "repro": "Browse → attempt filter by location, price range, availability, ratings"
+      },
+      {
+        "step": 12,
+        "severity": "Major",
+        "title": "Agreed pricing not copied onto booking from accepted offer",
+        "repro": "Accept counter-offer → inspect booking fields for agreed price"
+      },
+      {
+        "step": 17,
+        "severity": "Major",
+        "title": "Admin cannot view requests/bookings/audit from dedicated UI",
+        "repro": "Login as admin → look for Requests, Bookings, Audit Logs pages"
+      }
+    ],
+    "recommendation": "DO_NOT_RELEASE",
+    "executedAt": "2026-07-15T10:17:45.784Z",
+    "mode": "STRUCTURAL",
+    "base": null
+  },
+  "results": [
+    {
+      "step": 1,
+      "id": "ADMIN_CATEGORIES",
+      "name": "Admin category management",
+      "status": "PARTIAL",
+      "evidence": "APIs + /admin/categories UI present; MACHINERY type via taxonomy seed; UI/forms not fully wired to all filters",
+      "defects": [
+        {
+          "severity": "Major",
+          "title": "Category ↔ listing/search wiring incomplete",
+          "repro": "Create MACHINERY category in admin → open /provider-setup and /browse filters"
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "id": "MFG_REGISTER",
+      "name": "Manufacturer registration",
+      "status": "PARTIAL",
+      "evidence": "Register with primaryRole=MANUFACTURER works; email verify issued but not gated before session",
+      "defects": [
+        {
+          "severity": "Minor",
+          "title": "Email verification not enforced before access",
+          "repro": "Register → access dashboard without verifying email"
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "id": "FACILITY_PROFILE",
+      "name": "Manufacturer facility profile",
+      "status": "PASS",
+      "evidence": "POST /api/facilities + provider-setup facility step",
+      "defects": []
+    },
+    {
+      "step": 4,
+      "id": "MACHINERY_LISTING",
+      "name": "Machinery listing with pricing/availability",
+      "status": "PARTIAL",
+      "evidence": "Machinery + multi-pricing + slots API; UI partial for images/labor/logistics/materials",
+      "defects": [
+        {
+          "severity": "Major",
+          "title": "Listing UI missing image upload and support fields",
+          "repro": "Complete provider-setup step 2 — no image upload for machinery"
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "id": "ADMIN_APPROVE",
+      "name": "Admin listing moderation approve",
+      "status": "PASS",
+      "evidence": "Approve route + admin listings UI",
+      "defects": []
+    },
+    {
+      "step": 6,
+      "id": "VI_REGISTER",
+      "name": "Visionary registration",
+      "status": "PARTIAL",
+      "evidence": "Role VISIONARY supported; same verify-gate caveat as manufacturer",
+      "defects": []
+    },
+    {
+      "step": 7,
+      "id": "SEARCH",
+      "name": "Manufacturer search + filters",
+      "status": "PARTIAL",
+      "evidence": "Search API + browse UI for q + machineType; price/availability/rating filters incomplete",
+      "defects": [
+        {
+          "severity": "Major",
+          "title": "Search filters incomplete vs acceptance criteria",
+          "repro": "Browse → attempt filter by location, price range, availability, ratings"
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "id": "VIEW_LISTING",
+      "name": "View manufacturer listing detail",
+      "status": "PARTIAL",
+      "evidence": "Detail page exists; images/availability/certs display incomplete vs API payload",
+      "defects": []
+    },
+    {
+      "step": 9,
+      "id": "SUBMIT_REQUEST",
+      "name": "Visionary submits manufacturing request",
+      "status": "PARTIAL",
+      "evidence": "Request create + notify; no file attachments on listing requests",
+      "defects": [
+        {
+          "severity": "Minor",
+          "title": "No file attachments on listing requests",
+          "repro": "Booking form → no attach control"
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "id": "COUNTER_OFFER",
+      "name": "Manufacturer counter-offer",
+      "status": "PASS",
+      "evidence": "Offers API + UI counter-offer form",
+      "defects": []
+    },
+    {
+      "step": 11,
+      "id": "ACCEPT_OFFER",
+      "name": "Visionary accepts counter-offer → booking",
+      "status": "PASS",
+      "evidence": "respondToOffer creates booking in transaction path",
+      "defects": []
+    },
+    {
+      "step": 12,
+      "id": "BOOKING",
+      "name": "Booking record completeness",
+      "status": "PARTIAL",
+      "evidence": "Booking created; agreedPrice not populated from counter-offer; no dedicated GET by id API",
+      "defects": [
+        {
+          "severity": "Major",
+          "title": "Agreed pricing not copied onto booking from accepted offer",
+          "repro": "Accept counter-offer → inspect booking fields for agreed price"
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "id": "TRANSACTION",
+      "name": "Transaction created on accept",
+      "status": "FAIL",
+      "evidence": "Transaction APIs exist but are NOT auto-created on request accept / offer accept",
+      "defects": [
+        {
+          "severity": "Blocker",
+          "title": "No automatic transaction record on booking confirmation",
+          "repro": "Complete steps 9–11 → query transactions for bookingId — expect none"
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "id": "MESSAGING",
+      "name": "Request messaging thread",
+      "status": "PARTIAL",
+      "evidence": "Text messages + notifications; no attachments",
+      "defects": []
+    },
+    {
+      "step": 15,
+      "id": "COMPLETE_BOOKING",
+      "name": "Mark booking completed",
+      "status": "PASS",
+      "evidence": "POST /api/bookings/[id]/complete + UI affordance",
+      "defects": []
+    },
+    {
+      "step": 16,
+      "id": "REVIEW",
+      "name": "Visionary submits review",
+      "status": "PASS",
+      "evidence": "Booking reviews route present",
+      "defects": []
+    },
+    {
+      "step": 17,
+      "id": "ADMIN_OPS",
+      "name": "Admin console coverage",
+      "status": "PARTIAL",
+      "evidence": "Users/listings/transactions/reviews UI; missing dedicated requests/bookings/notifications/audit UI pages",
+      "defects": [
+        {
+          "severity": "Major",
+          "title": "Admin cannot view requests/bookings/audit from dedicated UI",
+          "repro": "Login as admin → look for Requests, Bookings, Audit Logs pages"
+        }
+      ]
+    },
+    {
+      "step": 0,
+      "id": "SECURITY",
+      "name": "Security NFR gates",
+      "status": "PASS",
+      "evidence": "scrypt hashing, rate limits, file ownership checks present in codebase",
+      "defects": []
+    },
+    {
+      "step": 0,
+      "id": "ENV_STAGING",
+      "name": "Staging environment executable",
+      "status": "FAIL",
+      "evidence": "No MVP_BASE_URL / STAGING_BASE_URL / running local server — live E2E not executed",
+      "defects": [
+        {
+          "severity": "Blocker",
+          "title": "Staging environment unavailable for acceptance execution",
+          "repro": "Set MVP_BASE_URL and ensure app+DB migrations applied, then re-run --live"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,486 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: AI Assistant API with voice, multilingual, and accessibility support
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: auth
+    description: Authentication operations
+  - name: search
+    description: AI search and query operations
+  - name: conversations
+    description: Conversation history operations
+  - name: languages
+    description: Language and localization operations
+
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterBody"
+      responses:
+        "201":
+          description: User registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "409":
+          description: User already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginBody"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Logout user
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current user
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /search:
+    post:
+      operationId: search
+      tags: [search]
+      summary: Perform AI search / ask a question
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchBody"
+      responses:
+        "200":
+          description: Search results with AI response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchResponse"
+
+  /search/suggestions:
+    get:
+      operationId: getSearchSuggestions
+      tags: [search]
+      summary: Get search suggestions / popular queries
+      parameters:
+        - name: lang
+          in: query
+          schema:
+            type: string
+            default: en
+      responses:
+        "200":
+          description: List of suggestions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuggestionsResponse"
+
+  /conversations:
+    get:
+      operationId: listConversations
+      tags: [conversations]
+      summary: List user conversation history
+      responses:
+        "200":
+          description: List of conversations
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConversationsListResponse"
+
+    post:
+      operationId: createConversation
+      tags: [conversations]
+      summary: Create a new conversation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateConversationBody"
+      responses:
+        "201":
+          description: Conversation created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conversation"
+
+  /conversations/{id}:
+    get:
+      operationId: getConversation
+      tags: [conversations]
+      summary: Get a single conversation with messages
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Conversation with messages
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConversationDetail"
+
+    delete:
+      operationId: deleteConversation
+      tags: [conversations]
+      summary: Delete a conversation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /conversations/stats:
+    get:
+      operationId: getConversationStats
+      tags: [conversations]
+      summary: Get conversation statistics for dashboard
+      responses:
+        "200":
+          description: Stats summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConversationStats"
+
+  /languages:
+    get:
+      operationId: listLanguages
+      tags: [languages]
+      summary: List supported languages
+      responses:
+        "200":
+          description: Supported languages
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LanguagesResponse"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required: [status]
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required: [error]
+
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required: [message]
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        preferredLanguage:
+          type: string
+        createdAt:
+          type: string
+      required: [id, name, email, preferredLanguage, createdAt]
+
+    RegisterBody:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        preferredLanguage:
+          type: string
+          default: en
+      required: [name, email, password]
+
+    LoginBody:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required: [email, password]
+
+    AuthResponse:
+      type: object
+      properties:
+        user:
+          $ref: "#/components/schemas/User"
+        token:
+          type: string
+      required: [user, token]
+
+    SearchBody:
+      type: object
+      properties:
+        query:
+          type: string
+        language:
+          type: string
+          default: en
+        conversationId:
+          type: integer
+        isVoice:
+          type: boolean
+          default: false
+      required: [query]
+
+    SearchResult:
+      type: object
+      properties:
+        title:
+          type: string
+        snippet:
+          type: string
+        url:
+          type: string
+        relevanceScore:
+          type: number
+      required: [title, snippet, relevanceScore]
+
+    SearchResponse:
+      type: object
+      properties:
+        query:
+          type: string
+        aiResponse:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/SearchResult"
+        language:
+          type: string
+        conversationId:
+          type: integer
+        messageId:
+          type: integer
+      required: [query, aiResponse, results, language]
+
+    SuggestionsResponse:
+      type: object
+      properties:
+        suggestions:
+          type: array
+          items:
+            type: string
+        trending:
+          type: array
+          items:
+            type: string
+      required: [suggestions, trending]
+
+    Conversation:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        language:
+          type: string
+        messageCount:
+          type: integer
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required: [id, title, language, messageCount, createdAt, updatedAt]
+
+    Message:
+      type: object
+      properties:
+        id:
+          type: integer
+        role:
+          type: string
+          enum: [user, assistant]
+        content:
+          type: string
+        isVoice:
+          type: boolean
+        createdAt:
+          type: string
+      required: [id, role, content, isVoice, createdAt]
+
+    ConversationDetail:
+      type: object
+      properties:
+        conversation:
+          $ref: "#/components/schemas/Conversation"
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/Message"
+      required: [conversation, messages]
+
+    ConversationsListResponse:
+      type: object
+      properties:
+        conversations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Conversation"
+        total:
+          type: integer
+      required: [conversations, total]
+
+    CreateConversationBody:
+      type: object
+      properties:
+        title:
+          type: string
+        language:
+          type: string
+          default: en
+      required: [title]
+
+    ConversationStats:
+      type: object
+      properties:
+        totalConversations:
+          type: integer
+        totalMessages:
+          type: integer
+        languagesUsed:
+          type: array
+          items:
+            type: string
+        voiceQueriesCount:
+          type: integer
+        topQueries:
+          type: array
+          items:
+            type: string
+      required: [totalConversations, totalMessages, languagesUsed, voiceQueriesCount, topQueries]
+
+    Language:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        nativeName:
+          type: string
+        rtl:
+          type: boolean
+        flag:
+          type: string
+      required: [code, name, nativeName, rtl, flag]
+
+    LanguagesResponse:
+      type: object
+      properties:
+        languages:
+          type: array
+          items:
+            $ref: "#/components/schemas/Language"
+      required: [languages]
