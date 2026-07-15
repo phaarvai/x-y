@@ -169,7 +169,7 @@ export default function LegalSearchPage() {
                   </div>
                   <p className="text-sm text-gray-500 line-clamp-2 mb-3">{p.bio || p.businessName}</p>
                   <div className="flex flex-wrap gap-3 text-xs text-gray-500">
-                    {(p.city || p.location) && (
+                    {(p.city || p.state || p.country) && (
                       <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{[p.city, p.state].filter(Boolean).join(", ") || p.country}</span>
                     )}
                     <span className="flex items-center gap-1"><Star className="w-3 h-3 text-amber-400 fill-amber-400" />{Number(p.rating || 0).toFixed(1)} ({p.reviewCount})</span>
