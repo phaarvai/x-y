@@ -64,3 +64,5 @@ artifacts/nextjs-app/.next
 uploads/
 artifacts/api-server/uploads/
 artifacts/nextjs-app/uploads/
+.vercel
+.env*
